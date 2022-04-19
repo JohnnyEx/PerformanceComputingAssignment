@@ -1,0 +1,27 @@
+#!/bin/bash
+#SBATCH --job-name=threaded_job_MaxwellOPENMP	#OPENMP Jobname
+#SBATCH --mail-type=END,FAIL			# Mail event(none,begin,end,fail,all)
+#SBATCH --mail-user=iab533@york.ac.uk		# Where to send email
+#SBATCH --ntasks=2				#Run on a single CPU
+#SBATCH --cpus-per-task=32			#...with 8 cores
+#SBATCH --mem=4gb				# Job memory request
+#SBATCH --time=00:10:00				# Time limit hrs:min:sec
+#SBATCH --output=MaxwellOPENMP_%j.log		# Standard Output and error log
+#SBATCH --partition=teach			# run in the teaching queue
+
+echo Working directory is `pwd`
+echo Running job on host
+echo -e '\t' `hostname` at `date`
+echo $SLURM_CPUS_ON_NODE CPU cores available
+echo
+
+module load compiler/GCC/11.2.0
+module load perf/PAPI/6.0.0.1-GCCcore-11.2.0
+
+export OMP_NUM_THREADS=64
+"/users/iab533/scratch/HIPC-Assignment/maxwell - OPENMP/maxwell"
+
+echo 
+echo Job finished at `date`
+
+

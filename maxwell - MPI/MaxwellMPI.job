@@ -1,0 +1,30 @@
+#!/bin/bash
+#SBATCH --job-name=threaded_job_MaxwellMPI	#OPENMP Jobname
+#SBATCH --mail-type=END,FAIL			# Mail event(none,begin,end,fail,all)
+#SBATCH --mail-user=iab533@york.ac.uk	# Where to send email
+#SBATCH --ntasks=40				        #Run on a single CPU
+#SBATCH --nodes=2
+#SBATCH --ntasks-per-node=20
+#SBATCH --cpus-per-task=1			    #...with 8 cores
+#SBATCH --time=00:10:00				    # Time limit hrs:min:sec
+#SBATCH --output=MaxwellMPI_%j.log	# Standard Output and error log
+#SBATCH --partition=teach			    # run in the teaching queue
+#SBATCH --mem-per-cpu=1gb
+#SBATCH --exclusive
+
+echo Working directory is `pwd`
+echo Running job on host
+echo -e '\t' `hostname` at `date`
+echo $SLURM_CPUS_ON_NODE CPU cores available
+echo $SLURM_JOB_NODELIST - job number
+echo
+
+module load compiler/GCC/11.2.0
+module load mpi/OpenMPI/4.0.5-GCC-10.2.0
+
+mpirun -n 40 "/users/iab533/scratch/HIPC-Assignment/maxwell - MPI/maxwell"
+
+echo 
+echo Job finished at `date`
+
+

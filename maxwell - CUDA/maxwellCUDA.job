@@ -1,0 +1,30 @@
+#!/bin/bash
+#SBATCH --job-name=threaded_job_CUDA	#OPENMP Jobname
+#SBATCH --mail-type=END,FAIL			# Mail event(none,begin,end,fail,all)
+#SBATCH --mail-user=iab533@york.ac.uk	# Where to send email
+#SBATCH --ntasks=40				        #Run on a single CPU
+#SBATCH --nodes=2
+#SBATCH --ntasks-per-node=20
+#SBATCH --cpus-per-task=1			    #...with 8 cores
+#SBATCH --time=00:10:00				    # Time limit hrs:min:sec
+#SBATCH --output=MaxwellCUDA_%j.log	# Standard Output and error log
+#SBATCH --partition=gpu			    # run in the teaching queue
+#SBATCH --mem=4gb
+#SBATCH --gres=gpu:1
+#SBATCH --exclusive
+
+echo Working directory is `pwd`
+echo Running job on host
+echo -e '\t' `hostname` at `date`
+echo $SLURM_CPUS_ON_NODE CPU cores available
+echo $SLURM_JOB_NODELIST - job number
+echo ####CUDA ONLY####
+echo $CUDA_VISIBLE_DEVICES - GPU devices
+echo
+
+module load system/CUDA/11.0.2-GCC-9.3.0
+
+"/users/iab533/scratch/HIPC-Assignment/maxwell - CUDA/maxwell"
+
+echo
+echo Job finished at `date`
